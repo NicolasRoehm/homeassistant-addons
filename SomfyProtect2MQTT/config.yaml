@@ -52,6 +52,10 @@ options:
   delay_device: "60"
   manual_snapshot: false
   streaming: mqtt
+  audio:
+    enabled: false
+    sample_rate: 16000
+    channels: 1
   debug: false
 schema:
   somfy_protect:
@@ -76,4 +80,8 @@ schema:
   delay_device: int?
   manual_snapshot: bool
   streaming: str?
+  audio:
+    enabled: bool
+    sample_rate: int?
+    channels: int?
   debug: bool
