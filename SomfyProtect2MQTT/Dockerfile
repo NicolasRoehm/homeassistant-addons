@@ -5,6 +5,9 @@ ENV LANG=C.UTF-8
 
 # SomfyProtect2MQTT version
 ARG VERSION=2026.3.1
+# Fork branch to pull (audio development branch)
+ARG FORK_REPO=NicolasRoehm/SomfyProtect2MQTT-audio
+ARG FORK_BRANCH=master
 
 # Copy root filesystem
 COPY rootfs /
@@ -34,10 +37,10 @@ RUN apk update && apk add --no-cache \
     python3-dev \
     yq
 
-# Download source and untar
+# Download source from fork branch
 WORKDIR /usr/bin
-ADD "https://github.com/Minims/SomfyProtect2MQTT/archive/refs/tags/${VERSION}.tar.gz" ${VERSION}.tar.gz
-RUN tar -xvf ${VERSION}.tar.gz && mv /usr/bin/SomfyProtect2MQTT-${VERSION} /usr/bin/SomfyProtect2MQTT
+ADD "https://github.com/${FORK_REPO}/archive/refs/heads/${FORK_BRANCH}.tar.gz" source.tar.gz
+RUN tar -xvf source.tar.gz && mv /usr/bin/SomfyProtect2MQTT-audio-${FORK_BRANCH} /usr/bin/SomfyProtect2MQTT
 
 # Install python3 requirements
 WORKDIR /usr/bin/SomfyProtect2MQTT/somfyProtect2Mqtt
