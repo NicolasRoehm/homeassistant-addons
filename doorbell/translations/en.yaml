@@ -1,0 +1,16 @@
+configuration:
+  somfy:
+    name: "Configuration Somfy MQTT"
+    description: "Préfixe de topic, site et device tels que configurés dans SomfyProtect2MQTT."
+  openai:
+    name: "Configuration OpenAI"
+    description: "Clé API OpenAI et modèle pour l'API Realtime."
+  ha_notify_target:
+    name: "Cible de notification HA"
+    description: "Nom de l'appareil dans la HA Companion App (ex: pixel_9). Visible dans Paramètres → Applications mobiles."
+  github:
+    name: "Configuration GitHub"
+    description: "PAT et informations du repo privé doorbell pour télécharger le code source."
+  debug:
+    name: "Mode debug"
+    description: "Active les logs détaillés."

@@ -1,0 +1,110 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Add-on: doorbell
+# Downloads the private repo on first run, then starts the Node.js orchestrator.
+# Re-run logic: restart → fast (reuses installed code)
+#               rebuild  → clean container → re-downloads from GitHub
+# ==============================================================================
+
+readonly APP_DIR=/opt/doorbell
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 1. Download & build — only on first start after a fresh Docker build
+# ──────────────────────────────────────────────────────────────────────────────
+if [ ! -f "${APP_DIR}/.installed" ]; then
+    GITHUB_PAT=$(bashio::config 'github.pat')
+    GITHUB_REPO=$(bashio::config 'github.repo')
+    GITHUB_BRANCH=$(bashio::config 'github.branch')
+
+    bashio::log.info "First run — downloading doorbell@${GITHUB_BRANCH} from ${GITHUB_REPO}..."
+    mkdir -p "${APP_DIR}"
+
+    # Download private repo tarball via PAT
+    HTTP_CODE=$(curl -fsSL \
+        -H "Authorization: token ${GITHUB_PAT}" \
+        "https://api.github.com/repos/${GITHUB_REPO}/tarball/${GITHUB_BRANCH}" \
+        -o /tmp/doorbell.tar.gz \
+        -w "%{http_code}" 2>/dev/null || echo "000")
+
+    if [ "${HTTP_CODE}" != "200" ]; then
+        bashio::log.fatal "Failed to download source (HTTP ${HTTP_CODE}). Check your GitHub PAT and repo name in the add-on options."
+        exit 1
+    fi
+
+    tar -xzf /tmp/doorbell.tar.gz --strip-components=1 -C "${APP_DIR}"
+    rm /tmp/doorbell.tar.gz
+
+    # Install orchestrator dependencies
+    bashio::log.info "Installing orchestrator dependencies..."
+    cd "${APP_DIR}/orchestrator"
+    npm ci --omit=dev
+
+    # Build orchestrator TypeScript → dist/
+    bashio::log.info "Building orchestrator TypeScript..."
+    npm run build
+
+    # Build Angular app if the app/ directory is present (Phase 3+)
+    if [ -d "${APP_DIR}/app" ]; then
+        bashio::log.info "Building Angular app..."
+        cd "${APP_DIR}/app"
+        npm ci
+        npm run build -- --configuration production
+    fi
+
+    touch "${APP_DIR}/.installed"
+    bashio::log.info "doorbell installed successfully."
+fi
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 2. Export environment variables from add-on options
+# ──────────────────────────────────────────────────────────────────────────────
+export SOMFY_TOPIC_PREFIX
+SOMFY_TOPIC_PREFIX=$(bashio::config 'somfy.topic_prefix')
+
+export SOMFY_SITE
+SOMFY_SITE=$(bashio::config 'somfy.site')
+
+export SOMFY_DEVICE
+SOMFY_DEVICE=$(bashio::config 'somfy.device')
+
+export OPENAI_API_KEY
+OPENAI_API_KEY=$(bashio::config 'openai.api_key')
+
+export OPENAI_MODEL
+OPENAI_MODEL=$(bashio::config 'openai.model')
+
+export HA_NOTIFY_TARGET
+HA_NOTIFY_TARGET=$(bashio::config 'ha_notify_target')
+
+export SUPERVISOR_TOKEN
+
+export HA_API_URL=http://supervisor/core/api
+
+export PORT=3000
+
+# MQTT — auto-discovered from the HA Mosquitto add-on
+export MQTT_HOST
+MQTT_HOST=$(bashio::services mqtt "host")
+
+export MQTT_PORT
+MQTT_PORT=$(bashio::services mqtt "port")
+
+export MQTT_USERNAME
+MQTT_USERNAME=$(bashio::services mqtt "username")
+
+export MQTT_PASSWORD
+MQTT_PASSWORD=$(bashio::services mqtt "password")
+
+if bashio::config.true 'debug'; then
+    bashio::log.info "Debug mode enabled"
+    export LOG_LEVEL=debug
+else
+    export LOG_LEVEL=info
+fi
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 3. Start
+# ──────────────────────────────────────────────────────────────────────────────
+bashio::log.info "Starting doorbell orchestrator..."
+exec node "${APP_DIR}/orchestrator/dist/index.js"

@@ -1,1 +1,0 @@
-../SomfyProtect2MQTT/CHANGELOG.md
