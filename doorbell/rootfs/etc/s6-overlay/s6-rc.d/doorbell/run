@@ -35,14 +35,18 @@ if [ ! -f "${APP_DIR}/.installed" ]; then
     tar -xzf /tmp/doorbell.tar.gz --strip-components=1 -C "${APP_DIR}"
     rm /tmp/doorbell.tar.gz
 
-    # Install orchestrator dependencies
+    # Install orchestrator dependencies (including devDependencies needed for tsc)
     bashio::log.info "Installing orchestrator dependencies..."
     cd "${APP_DIR}/orchestrator"
-    npm ci --omit=dev
+    npm ci
 
     # Build orchestrator TypeScript → dist/
     bashio::log.info "Building orchestrator TypeScript..."
     npm run build
+
+    # Prune devDependencies to reduce image size
+    bashio::log.info "Pruning dev dependencies..."
+    npm prune --omit=dev
 
     # Build Angular app if the app/ directory is present (Phase 3+)
     if [ -d "${APP_DIR}/app" ]; then
