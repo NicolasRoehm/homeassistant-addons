@@ -1,7 +1,7 @@
 ---
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: doorbell
-version: 0.1.3
+version: 0.1.4
 slug: doorbell
 description: "Orchestrateur IA pour sonnette Somfy : répond automatiquement aux visiteurs via un agent vocal, avec interface de surveillance en temps réel"
 url: https://github.com/NicolasRoehm/homeassistant-addons/tree/main/doorbell
@@ -24,6 +24,8 @@ options:
   openai:
     api_key: ""
     model: gpt-4o-realtime-preview
+    voice: nova
+    system_prompt: "You are a friendly AI doorbell assistant. Greet visitors warmly, ask who they are and the reason for their visit. Keep answers short and clear. Speak in the same language as the visitor."
   ha_notify_target: ""
   github:
     pat: ""
@@ -37,6 +39,8 @@ schema:
   openai:
     api_key: password
     model: str
+    voice: str
+    system_prompt: str
   ha_notify_target: str
   github:
     pat: password

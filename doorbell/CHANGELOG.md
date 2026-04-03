@@ -1,5 +1,13 @@
 # Changelog — doorbell
 
+## 0.1.4 — 2026-04-04
+
+### Added
+
+- Ajout des options `openai.voice` et `openai.system_prompt` dans la configuration de l'addon
+- La voix OpenAI Realtime est maintenant configurable (défaut : `nova`)
+- Le prompt système est maintenant personnalisable sans modifier le code
+
 ## 0.1.0 — 2026-04-03
 
 ### Added

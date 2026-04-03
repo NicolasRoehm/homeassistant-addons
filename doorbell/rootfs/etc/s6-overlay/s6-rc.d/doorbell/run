@@ -75,6 +75,12 @@ OPENAI_API_KEY=$(bashio::config 'openai.api_key')
 export OPENAI_MODEL
 OPENAI_MODEL=$(bashio::config 'openai.model')
 
+export OPENAI_VOICE
+OPENAI_VOICE=$(bashio::config 'openai.voice')
+
+export OPENAI_SYSTEM_PROMPT
+OPENAI_SYSTEM_PROMPT=$(bashio::config 'openai.system_prompt')
+
 export HA_NOTIFY_TARGET
 HA_NOTIFY_TARGET=$(bashio::config 'ha_notify_target')
 
