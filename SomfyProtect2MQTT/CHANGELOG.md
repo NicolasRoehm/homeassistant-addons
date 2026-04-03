@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.4.0
+
+- feat: added audio section to addon schema (enabled, sample_rate, channels)
+
 ## 2026.3.1
 
 - Fixed: Somfy SSO token rate-limit handling (retry-after honored, retry/backoff, improved logs)
