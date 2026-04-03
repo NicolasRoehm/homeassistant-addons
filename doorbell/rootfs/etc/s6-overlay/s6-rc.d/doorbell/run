@@ -105,6 +105,18 @@ else
 fi
 
 # ──────────────────────────────────────────────────────────────────────────────
+# 2b. Patch Angular base href to match HA ingress path (every startup)
+# ──────────────────────────────────────────────────────────────────────────────
+# HA ingress proxies /api/hassio_ingress/<entry>/* → addon:3000/*
+# The browser must load assets via the ingress path, not from HA root.
+readonly INDEX_HTML="${APP_DIR}/app/dist/doorbell-app/browser/index.html"
+if [ -f "${INDEX_HTML}" ]; then
+    INGRESS_ENTRY=$(bashio::addon.ingress_entry)
+    sed -i "s|<base href=\"[^\"]*\">|<base href=\"${INGRESS_ENTRY}/\">|" "${INDEX_HTML}"
+    bashio::log.info "Angular base href → ${INGRESS_ENTRY}/"
+fi
+
+# ──────────────────────────────────────────────────────────────────────────────
 # 3. Start
 # ──────────────────────────────────────────────────────────────────────────────
 bashio::log.info "Starting doorbell orchestrator..."
