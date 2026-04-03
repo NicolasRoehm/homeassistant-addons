@@ -3,6 +3,10 @@ ARG BUILD_FROM
 FROM ${BUILD_FROM}
 ENV LANG=C.UTF-8
 
+# Fork branch to pull (audio development branch)
+ARG FORK_REPO=NicolasRoehm/SomfyProtect2MQTT-audio
+ARG FORK_BRANCH=master
+
 # Copy root filesystem
 COPY rootfs /
 
@@ -44,10 +48,10 @@ for base in map(Path, site.getsitepackages()):
             meta.write_text(text.replace("Version: python-", "Version: "))
 PY
 
-# Download source and untar
+# Download source from fork branch
 WORKDIR /usr/bin
-ADD "https://github.com/Minims/SomfyProtect2MQTT/archive/refs/heads/dev.tar.gz" dev.tar.gz
-RUN tar -xvf dev.tar.gz && mv /usr/bin/SomfyProtect2MQTT-dev /usr/bin/SomfyProtect2MQTT
+ADD "https://github.com/${FORK_REPO}/archive/refs/heads/${FORK_BRANCH}.tar.gz" source.tar.gz
+RUN tar -xvf source.tar.gz && mv /usr/bin/SomfyProtect2MQTT-audio-${FORK_BRANCH} /usr/bin/SomfyProtect2MQTT
 
 # Install python3 requirements
 WORKDIR /usr/bin/SomfyProtect2MQTT/somfyProtect2Mqtt
