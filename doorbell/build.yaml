@@ -9,4 +9,4 @@ labels:
   org.opencontainers.image.source: "https://github.com/NicolasRoehm/homeassistant-addons"
   org.opencontainers.image.licenses: "MIT"
 args:
-  VERSION: "0.1.0"
+  VERSION: "0.1.2"
