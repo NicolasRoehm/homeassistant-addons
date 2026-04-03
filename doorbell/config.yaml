@@ -21,7 +21,6 @@ options:
   somfy:
     topic_prefix: somfyProtect2mqtt
     site: ""
-    device: ""
   openai:
     api_key: ""
     model: gpt-4o-realtime-preview
@@ -35,7 +34,6 @@ schema:
   somfy:
     topic_prefix: str
     site: str
-    device: str
   openai:
     api_key: password
     model: str

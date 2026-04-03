@@ -1,7 +1,7 @@
 configuration:
   somfy:
     name: "Configuration Somfy MQTT"
-    description: "Préfixe de topic, site et device tels que configurés dans SomfyProtect2MQTT."
+    description: "Préfixe de topic et site tels que configurés dans SomfyProtect2MQTT. Le device ID est découvert automatiquement."
   openai:
     name: "Configuration OpenAI"
     description: "Clé API OpenAI et modèle pour l'API Realtime."

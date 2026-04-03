@@ -65,9 +65,6 @@ SOMFY_TOPIC_PREFIX=$(bashio::config 'somfy.topic_prefix')
 export SOMFY_SITE
 SOMFY_SITE=$(bashio::config 'somfy.site')
 
-export SOMFY_DEVICE
-SOMFY_DEVICE=$(bashio::config 'somfy.device')
-
 export OPENAI_API_KEY
 OPENAI_API_KEY=$(bashio::config 'openai.api_key')
 
