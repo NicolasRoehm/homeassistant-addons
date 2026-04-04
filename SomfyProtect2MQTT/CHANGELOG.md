@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026.4.7
+
+- fix: remove `forward: True` from `video.webrtc.start` — when set, the Somfy cloud just routes the packet directly to the camera without updating its internal call state, so it never sent the "call answered" push notification to the homeowner's phone
+- fix: replace one-shot `_awaiting_answer_echo` with persistent `_answered_devices` set — the cloud can send multiple `answered_call_from_mobile` echoes during a session (one for our manual message, one for processing `video.webrtc.start`); the previous guard discarded on first receipt and left all subsequent echoes unblocked, which could terminate the AI session
+- fix: clear `_answered_devices` in `_video_webrtc_hang_up`, `_device_missed_call`, and hangup command handler so state is clean for the next ring
+- fix: `_device_answered_call_from_monitor` now also clears `_answered_devices` before yielding so a human picking up at the monitor always wins cleanly
+
 ## 2026.4.6
 
 - fix: send `answered_call_from_mobile` WebSocket message to the Somfy cloud when answering a call — this is the signal the cloud uses to notify the interior monitor to stop ringing; the previous `prepare_push_to_talk` REST call alone was insufficient
