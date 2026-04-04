@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.4.9
+
+- fix: restore `forward: True` on `answered_call_from_mobile` — log analysis confirmed the camera has a hard 45-second ring timeout (from the moment the doorbell is pressed) that is only cancelled when it receives `answered_call_from_mobile` relayed through the cloud (`forward: True`); without it the cloud processes the message locally without relaying to the camera, the timer runs to completion, WebRTC is closed by the camera and `device.missed_call` is published; the hypothesis that removing `forward: True` would enable the push notification was incorrect
+
 ## 2026.4.8
 
 - fix: restore `forward: True` on `video.webrtc.start` — removing it (v2026.4.7) caused a full regression because the camera never received the start signal and never sent back a `video.webrtc.offer`, leaving the system permanently in ringing state
