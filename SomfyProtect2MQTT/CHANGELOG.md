@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026.4.8
+
+- fix: restore `forward: True` on `video.webrtc.start` — removing it (v2026.4.7) caused a full regression because the camera never received the start signal and never sent back a `video.webrtc.offer`, leaving the system permanently in ringing state
+- fix: send `answered_call_from_mobile` WITHOUT `forward: True` — hypothesis: the Somfy cloud distinguishes proxy-relayed messages (`forward: True`) from direct-client actions; only the latter triggers the "call answered" push notification to the homeowner's phone
+- feat: add `[TRACE-WS RECV]` / `[TRACE-WS SEND]` INFO-level log lines for every WebSocket message exchanged with the Somfy cloud (key + site/device/session IDs; full payload for non-sensitive messages) to enable call-flow diagnosis without enabling debug mode
+
 ## 2026.4.7
 
 - fix: remove `forward: True` from `video.webrtc.start` — when set, the Somfy cloud just routes the packet directly to the camera without updating its internal call state, so it never sent the "call answered" push notification to the homeowner's phone
