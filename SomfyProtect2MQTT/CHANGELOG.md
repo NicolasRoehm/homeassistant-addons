@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.4.5
+
+- fix: on WebRTC/ICE connection failure (`iceConnectionState == failed` or `connectionState == failed`), call `close_session()` instead of `pc.close()` directly — the previous code never published `call/state: ended` to MQTT, leaving the orchestrator permanently stuck in `ringing` state and silently blocking every subsequent ring
+
 ## 2026.4.4
 
 - fix: call `prepare_push_to_talk` via the Somfy REST API before starting the WebRTC stream when answering a call — without this, `video.webrtc.start` was forwarded directly to the camera (forward=True) without the Somfy cloud registering the call as answered, causing the interior display to keep ringing and the camera speaker to remain in ring-tone mode instead of talk mode
