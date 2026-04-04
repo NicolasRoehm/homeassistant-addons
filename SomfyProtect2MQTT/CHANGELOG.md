@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.4.11
+
+- chore: version bump
+
 ## 2026.4.10
 
 - fix: include `event_id` from the `device.ring_door_bell` event in the `answered_call_from_mobile` WebSocket message — log analysis of the 2026-04-04 call confirmed the cloud was rejecting our answer with `"failed to forward, no routing for key answered_call_from_mobile"`; the Somfy cloud routing table requires the `event_id` to identify which ring session to cancel; without it the interior chime keeps ringing for the full 45 s and the cloud terminates the WebRTC session with `device.missed_call`
