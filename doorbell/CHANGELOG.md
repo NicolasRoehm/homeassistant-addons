@@ -1,5 +1,30 @@
 # Changelog — doorbell
 
+## 0.1.8 — 2026-04-04
+
+### Changed
+
+- `SOMFY_SITE` accepte maintenant un **nom lisible** (ex. `Maison`) en plus d’un UUID ou d’une valeur vide
+  - UUID → filtre direct, aucun changement
+  - Nom (ex. `Maison`) → résolutions automatique de l’UUID depuis les topics `/info` retenus au démarrage
+  - Vide → premier site vu accepté (comportement inchangé)
+- Filtrage site désormais dynamique (client.ts) plutôt que statique à la compilation
+
+## 0.1.7 — 2026-04-04
+
+### Added
+
+- La liste de tous les sites Somfy connus est maintenant visible dans `GET /debug/discovery` avec leur `site_id` et leur label (ex. `"Maison"`)
+- Abonnement au topic `{prefix}/+/info` : peuplé automatiquement par SomfyProtect2MQTT à son démarrage
+
+## 0.1.6 — 2026-04-04
+
+### Changed
+
+- `SOMFY_SITE` est maintenant optionnel : si absent (champ vide), l’orchestrateur découvre automatiquement le `site_id` et le `device_id` depuis le premier message MQTT reçu
+- Le schéma HA passe `somfy.site` en `str?` (optionnel)
+- Endpoint `GET /debug/discovery` : retourne le `site_id` et `device_id` découverts (ou un message d’attente) — accessible via Ingress de l’addon
+
 ## 0.1.5 — 2026-04-04
 
 ### Fixed

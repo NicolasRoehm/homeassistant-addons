@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.4.2
+
+- feat: publish `{prefix}/{site_id}/info` (retained) with `{"site_id": "...", "label": "Maison"}` at startup for each configured site
+
 ## 2026.4.1
 
 - fix: always publish `call/state: ringing` on ring event (was gated on `audio.enabled`, blocking external consumers)
