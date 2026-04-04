@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.4.4
+
+- fix: call `prepare_push_to_talk` via the Somfy REST API before starting the WebRTC stream when answering a call — without this, `video.webrtc.start` was forwarded directly to the camera (forward=True) without the Somfy cloud registering the call as answered, causing the interior display to keep ringing and the camera speaker to remain in ring-tone mode instead of talk mode
+
 ## 2026.4.3
 
 - fix: split large audio/outbound MQTT payloads into 20 ms sub-chunks in `LiveAudioTrack.inject_pcm` — previously only the first 20 ms of each AI audio packet was played on the camera speaker, the rest was silently discarded
