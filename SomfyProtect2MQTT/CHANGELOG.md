@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026.4.10
+
+- fix: include `event_id` from the `device.ring_door_bell` event in the `answered_call_from_mobile` WebSocket message — log analysis of the 2026-04-04 call confirmed the cloud was rejecting our answer with `"failed to forward, no routing for key answered_call_from_mobile"`; the Somfy cloud routing table requires the `event_id` to identify which ring session to cancel; without it the interior chime keeps ringing for the full 45 s and the cloud terminates the WebRTC session with `device.missed_call`
+- fix: clean up stored `_last_ring_event_id` on hangup and `device.missed_call` to avoid stale state between calls
+
 ## 2026.4.9
 
 - fix: restore `forward: True` on `answered_call_from_mobile` — log analysis confirmed the camera has a hard 45-second ring timeout (from the moment the doorbell is pressed) that is only cancelled when it receives `answered_call_from_mobile` relayed through the cloud (`forward: True`); without it the cloud processes the message locally without relaying to the camera, the timer runs to completion, WebRTC is closed by the camera and `device.missed_call` is published; the hypothesis that removing `forward: True` would enable the push notification was incorrect
