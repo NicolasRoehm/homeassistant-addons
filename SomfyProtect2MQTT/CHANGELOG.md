@@ -1,6 +1,9 @@
 # Changelog
 
-## 2026.4.12
+## 2026.4.13
+
+- fix: publish `call/state:connected` immediately after `answered_call_from_mobile` is sent, without waiting for WebRTC ICE negotiation — previously the orchestrator stayed in "ringing" state for up to 45 s while ICE was still negotiating, delaying the AI session start; audio still only flows once WebRTC connects but the AI can begin its greeting session immediately
+- fix: guard against duplicate `answer` MQTT commands — once a device is in the active-session registry, additional `answer` commands (e.g. orchestrator retries) are ignored to prevent opening a second WebRTC session
 
 - fix: force WebRTC audio transceiver to `sendrecv` after `addTrack` — the camera's SDP offer may be `sendonly`; without explicitly setting `sendrecv` the answerer direction stayed `recvonly` and our `LiveAudioTrack` audio never reached the camera speaker
 - fix: call `prepare_push_to_talk` a second time after the WebRTC `connectionState` becomes `connected` — activates the camera's audio duplex mode in the live session so the camera microphone starts streaming and the speaker accepts incoming audio
