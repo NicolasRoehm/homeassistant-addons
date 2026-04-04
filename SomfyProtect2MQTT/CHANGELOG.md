@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026.4.6
+
+- fix: send `answered_call_from_mobile` WebSocket message to the Somfy cloud when answering a call — this is the signal the cloud uses to notify the interior monitor to stop ringing; the previous `prepare_push_to_talk` REST call alone was insufficient
+- fix: ignore the cloud echo of our own `answered_call_from_mobile` in `_device_answered_call_from_mobile` — previously the handler unconditionally published `call/state: ended`, which immediately terminated the AI session we had just opened
+
 ## 2026.4.5
 
 - fix: on WebRTC/ICE connection failure (`iceConnectionState == failed` or `connectionState == failed`), call `close_session()` instead of `pc.close()` directly — the previous code never published `call/state: ended` to MQTT, leaving the orchestrator permanently stuck in `ringing` state and silently blocking every subsequent ring
