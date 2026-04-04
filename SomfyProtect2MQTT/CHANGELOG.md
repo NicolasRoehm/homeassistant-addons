@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026.4.1
+
+- fix: always publish `call/state: ringing` on ring event (was gated on `audio.enabled`, blocking external consumers)
+- fix: publish `call/state: ended` when call is answered from monitor or mobile app
+- fix: publish `call/state: ended` on missed call event
+
 ## 2026.4.0
 
 - feat: added audio section to addon schema (enabled, sample_rate, channels)

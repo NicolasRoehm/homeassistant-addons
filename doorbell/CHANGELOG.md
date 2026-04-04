@@ -1,5 +1,13 @@
 # Changelog — doorbell
 
+## 0.1.5 — 2026-04-04
+
+### Fixed
+
+- L'orchestrateur s'abonne maintenant au topic `/ringing` en plus de `call/state` comme fallback de découverte
+- Protection contre les double-déclenchements si `ringing` et `call/state` arrivent simultanément
+- Log de diagnostic au démarrage : topics MQTT abonnés affichés pour vérifier que `SOMFY_SITE` correspond bien au site_id de SomfyProtect2MQTT
+
 ## 0.1.4 — 2026-04-04
 
 ### Added

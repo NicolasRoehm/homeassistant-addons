@@ -1,7 +1,7 @@
 ---
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: doorbell
-version: 0.1.4
+version: 0.1.5
 slug: doorbell
 description: "Orchestrateur IA pour sonnette Somfy : répond automatiquement aux visiteurs via un agent vocal, avec interface de surveillance en temps réel"
 url: https://github.com/NicolasRoehm/homeassistant-addons/tree/main/doorbell
