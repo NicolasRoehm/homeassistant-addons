@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026.4.3
+
+- fix: split large audio/outbound MQTT payloads into 20 ms sub-chunks in `LiveAudioTrack.inject_pcm` — previously only the first 20 ms of each AI audio packet was played on the camera speaker, the rest was silently discarded
+- fix: demote `_handle_audio_outbound` debug log to warning when no LiveAudioTrack is registered (easier diagnosis)
+- chore: add first-packet info logs for audio/outbound injection and `recv()` to aid debugging
+
 ## 2026.4.2
 
 - feat: publish `{prefix}/{site_id}/info` (retained) with `{"site_id": "...", "label": "Maison"}` at startup for each configured site
