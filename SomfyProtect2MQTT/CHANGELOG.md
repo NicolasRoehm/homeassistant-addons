@@ -1,6 +1,11 @@
 # Changelog
 
-## 2026.4.11
+## 2026.4.12
+
+- fix: force WebRTC audio transceiver to `sendrecv` after `addTrack` — the camera's SDP offer may be `sendonly`; without explicitly setting `sendrecv` the answerer direction stayed `recvonly` and our `LiveAudioTrack` audio never reached the camera speaker
+- fix: call `prepare_push_to_talk` a second time after the WebRTC `connectionState` becomes `connected` — activates the camera's audio duplex mode in the live session so the camera microphone starts streaming and the speaker accepts incoming audio
+- fix: add `event_id` to `video.webrtc.start` message — ties the WebRTC session to the already-answered ring event so interior monitors can identify it as a continuation and not a new ring
+- feat: add detailed audio diagnostic logging (`[SDP]` direction from offer, first inbound frame, periodic inbound frame count, multi-timeout warnings) to make future audio issues easier to trace in logs
 
 - chore: version bump
 
